@@ -1,0 +1,66 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  airflow:
+    build:
+      context: .
+      dockerfile: Dockerfile.airflow
+    environment:
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${AIRFLOW_DB}
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
+      NEWS_API_KEY: ${NEWS_API_KEY}
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./logs:/opt/airflow/logs
+      - ./plugins:/opt/airflow/plugins
+    depends_on:
+      - postgres
+    command: >
+      bash -c "
+      airflow db init &&
+      airflow users create --username ${AIRFLOW_USER} ... &&
+      airflow webserver"
+
+  dbt:
+    build:
+      context: .
+      dockerfile: Dockerfile.dbt
+    working_dir: /app/dbt_project/my_dbt_project
+    volumes:
+      - ./dbt_project/my_dbt_project:/app/dbt_project/my_dbt_project
+    depends_on:
+      - postgres
+    environment:
+      NEWS_API_KEY: ${NEWS_API_KEY}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+
+  superset:
+    image: apache/superset:latest
+    environment:
+      SUPERSET_SECRET_KEY: ${SUPERSET_SECRET_KEY}
+    ports:
+      - "8088:8088"
+    volumes:
+      - ./superset_config:/app/superset_home
+    depends_on:
+      - postgres
+    command: ["/app/docker/docker-init.sh"]
+
+volumes:
+  postgres_data:

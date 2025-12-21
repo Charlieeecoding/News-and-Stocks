@@ -1,0 +1,13 @@
+# Dockerfile.airflow
+FROM apache/airflow:2.10.0
+
+# Switch to root to install system dependencies if needed
+USER root
+RUN apt-get update && apt-get install -y gcc && rm -rf /var/lib/apt/lists/*
+
+# Switch back to airflow user
+USER airflow
+
+# Copy and install Python requirements
+COPY requirements.txt /requirements.txt
+RUN pip install --no-cache-dir -r /requirements.txt

@@ -1,0 +1,4 @@
+requests>=2.31
+psycopg2-binary>=2.9
+dbt-postgres>=1.8
+python-dotenv>=1.0  # to load .env locally
