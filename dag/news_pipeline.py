@@ -10,24 +10,21 @@ log = logging.getLogger(__name__)
 load_dotenv()
 
 # Define constants for API access
-NEWS_API_URL = os.getenv('NEWS_API_URL')
 NEWS_API_KEY = os.getenv('NEWS_API_KEY')
 
-# fetching news data 
-# def fetch_news(news_url, api_key, query, language):
-#     params = {
-#         'apiKey': api_key,
-#         'q': query,
-#         'language': language,
-#     }
-#     response = requests.get(news_url, params=params)
-#     response.raise_for_status()
-#     return response.json()
+NEWS_API_EVERYTHING_URL = os.getenv('NEWS_API_EVERYTHING_URL')
+NEWS_API_LANGUAGE = os.getenv('NEWS_API_LANGUAGE')
+NEWS_API_TOPIC = os.getenv('NEWS_API_TOPIC')
 
-api_url = f"{NEWS_API_URL}{NEWS_API_KEY}&language=en&pageSize=5"
+NEWS_API_TOP_HEADLINES_URL = os.getenv('NEWS_API_TOP_HEADLINES_URL')
+
+
+# fetching news data 
+news_api_everything_url = f"{NEWS_API_EVERYTHING_URL}{NEWS_API_KEY}{NEWS_API_LANGUAGE}{NEWS_API_TOPIC}&pageSize=5"
+news_api_top_headlines_url = f"{NEWS_API_TOP_HEADLINES_URL}{NEWS_API_KEY}&pageSize=5&category=technology&country=us"
 
 def fetch_news():
-    response = requests.get(api_url)
+    response = requests.get(news_api_everything_url)
     response.raise_for_status()
     return response.json()
 
