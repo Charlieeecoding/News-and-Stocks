@@ -1,0 +1,35 @@
+version: 1
+
+sources:
+  - name: bronze
+    schema: bronze               
+    database: news_and_stocks    
+    description: "Bronze - Raw ingested data layer"
+
+    tables:
+      - name: news_raw
+        description: "Raw JSON responses from News API, ingested via Python + Airflow"
+        loaded_at_field: created_at 
+        freshness:
+          warn_after: {count: 12, period: hour}
+          error_after: {count: 36, period: hour}
+        columns:
+          - name: id
+            description: "Auto-incrementing surrogate key"
+            tests:
+              - unique
+              - not_null
+          - name: data_source
+            description: "'news_api'"
+            data_type: varchar          
+          - name: created_at_hkt
+            description: "When this batch was created (HKT)"
+            data_type: timestamptz
+          - name: created_at_utc
+            description: "When this batch was created (UTC)"
+            data_type: timestamptz
+          - name: raw_data
+            description: "Full original JSON article payload"
+            data_type: jsonb 
+            tests:
+              - not_null
