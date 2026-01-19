@@ -28,24 +28,23 @@ news_api_top_headlines_url = f"{NEWS_API_TOP_HEADLINES_URL}{NEWS_API_KEY}{NEWS_C
 def fetch_news_everything():
     try:
         log.info(f"Fetching news data - everything")
-        response = requests.get(news_api_everything_url)
-        response.raise_for_status()
+        news_everything_response = requests.get(news_api_everything_url)
+        news_everything_response.raise_for_status()
         log.info(f"News data - everything fetched successfully")
     except Exception as e:
         log.error(f"Error fetching news everything data: {e}")
-    return response.json()
+    return news_everything_response.json()
 
 # fetch top headlines news
 def fetch_news_top_headlines():
     try:
         log.info(f"Fetching news data - top headlines")
-        response = requests.get(news_api_top_headlines_url)
-        response.raise_for_status()
+        news_top_headlines_response = requests.get(news_api_top_headlines_url)
+        news_top_headlines_response.raise_for_status()
         log.info(f"News data - top headlines fetched successfully")
     except Exception as e:
         log.error(f"Error fetching news top headlines data: {e}")
-    return response.json()
-    return response.json()
+    return news_top_headlines_response.json()
 
 
 

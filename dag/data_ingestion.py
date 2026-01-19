@@ -33,7 +33,7 @@ def table_creation(table_name, columns_definition):
 
     cursor = connection.cursor()
     try:
-        create_table_query = 
+        create_table_query = # import The SQL model files from dbt/models/
         cursor.execute(create_table_query)
         connection.commit()
         print(f"Table {table_name} created successfully.")
