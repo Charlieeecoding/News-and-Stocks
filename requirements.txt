@@ -1,4 +1,9 @@
-requests>=2.31
-psycopg2-binary>=2.9
-dbt-postgres>=1.8
-python-dotenv>=1.0  # to load .env locally
+requests>=2.32.3
+psycopg2-binary>=2.9.10
+python-dotenv>=1.0.1  # to load .env locally
+kafka-python>=2.0.2
+apache-airflow>=2.6
+apache-airflow-providers-postgres>=5.0
+yfinance>=0.2.44
+newsapi-python==0.2.7
+pathlib>=1.0.1

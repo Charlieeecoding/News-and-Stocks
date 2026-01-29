@@ -1,7 +1,0 @@
-CREATE SCHEMA IF NOT EXISTS bronze;
-CREATE TABLE IF NOT EXISTS bronze.news_raw (
-    id SERIAL NOT NULL PRIMARY KEY,
-    data_source VARCHAR(50),
-    raw_data JSONB NOT NULL,
-    created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
-);

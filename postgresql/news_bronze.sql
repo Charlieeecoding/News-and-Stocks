@@ -1,0 +1,6 @@
+CREATE TABLE IF NOT EXISTS news_bronze (
+    id SERIAL NOT NULL PRIMARY KEY,
+    source_id TEXT NOT NULL,
+    raw_data JSONB NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
