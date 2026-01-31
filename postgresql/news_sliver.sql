@@ -1,4 +1,6 @@
-CREATE TABLE IF NOT EXISTS news_sliver (
+CREATE SCHEMA IF NOT EXISTS sliver;
+
+CREATE TABLE IF NOT EXISTS sliver.news_sliver (
     id SERIAL NOT NULL PRIMARY KEY,
     source_id TEXT,
     source_name TEXT,

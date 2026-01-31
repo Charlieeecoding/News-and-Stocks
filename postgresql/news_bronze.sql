@@ -1,4 +1,6 @@
-CREATE TABLE IF NOT EXISTS news_bronze (
+CREATE SCHEMA IF NOT EXISTS bronze;
+
+CREATE TABLE IF NOT EXISTS bronze.news_bronze (
     id SERIAL NOT NULL PRIMARY KEY,
     source_id TEXT NOT NULL,
     raw_data JSONB NOT NULL,
