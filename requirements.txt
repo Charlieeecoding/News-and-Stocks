@@ -7,3 +7,4 @@ apache-airflow-providers-postgres>=5.0
 yfinance>=0.2.44
 newsapi-python==0.2.7
 pathlib>=1.0.1
+jsonschema>=4.23.0

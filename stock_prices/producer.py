@@ -3,7 +3,7 @@ import os
 from dotenv import load_dotenv
 import json
 import logging 
-from datetime import datetime
+from datetime import time
 import yfinance as yf
 
 log = logging.getLogger(__name__)
@@ -12,11 +12,47 @@ log = logging.getLogger(__name__)
 load_dotenv()
 
 # Define constants for Kafka access
+KAFKA_BOOTSTRAP = os.getenv("KAFKA_BOOTSTRAP_SERVERS")
+KAFKA_TOPIC_NAME = os.getenv("KAFKA_TOPIC_NAME")
+KAFKA_STOCK_PRICES_TOPIC = os.getenv("KAFKA_STOCK_PRICES_TOPIC")
+
+producer = KafkaProducer(
+    bootstrap_servers=KAFKA_BOOTSTRAP,
+    value_serializer=lambda v: json.dumps(v).encode('utf-8')
+)
+
+# Stock price data source - yFinance API
+stock_name = yf.Ticker(KAFKA_STOCK_PRICES_TOPIC)
 
 
-# Stock price data source - yFinance API for streaming
-ibm = yf.Ticker("IBM")
+# Producing stock price data to Kafka topic
+while True:
+    try:
+        ibm_history = stock_name.history(period="max", interval='1m')
+        for timestamp, row in ibm_history.iterrows():
+            stock_data = {
+                "Ticker": KAFKA_STOCK_PRICES_TOPIC,
+                "Datetime_hkt": timestamp.strftime('%Y-%m-%d %H:%M:%S'),
+                "Open": row['Open'],
+                "High": row['High'],
+                "Low": row['Low'],
+                "Close": row['Close'],
+                "Volume": int(row['Volume']), 
+                "Dividends": row['Dividends'], 
+                "Stock_Splits": row['Stock Splits']
+            }
+            producer.send(KAFKA_TOPIC_NAME, value=stock_data)
+            log.info(f"Produced data to topic {KAFKA_TOPIC_NAME}: {stock_data}")
+        
+        time.sleep(60)
+    except Exception as e:
+        log.error(f"Error producing data to Kafka: {e}")
+        time.sleep(10)
 
-ibm_history = ibm.history(period="max", interval='1m')
 
-print(ibm_history)
+# ibm_history = stock_name.history(period="max", interval='2m')
+# ibm_download = yf.download(tickers=KAFKA_STOCK_PRICES_TOPIC, period="max", interval="2m")
+
+# print(ibm_history)
+# print("-----------------------------------------")
+# print(ibm_download)
