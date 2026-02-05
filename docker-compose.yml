@@ -1,4 +1,4 @@
-version: '3.8'
+# version: '3.8'
 
 services:
   timescaledb:
@@ -18,6 +18,18 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin
+    restart: unless-stopped
+    ports:
+      - "8081:80"                     # ← access at http://localhost:8081
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@local.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    depends_on:
+      - timescaledb
 
   kafka:
     image: apache/kafka:latest

@@ -8,4 +8,7 @@ CREATE TABLE IF NOT EXISTS bronze.stock_prices_bronze (
     low FLOAT,
     close FLOAT,
     volume BIGINT,
+    fetch_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    vwap FLOAT, 
+    transacrtions BIGINT
 );
