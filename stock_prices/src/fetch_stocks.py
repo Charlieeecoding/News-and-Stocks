@@ -105,4 +105,5 @@ def fetch_stock_data(symbols: List[str]) -> List[Dict[str, Any]]:
     return results
 
 
-fetch_stock_data(STOCK_SYMBOLS)
+if __name__ == "__main__":
+    fetch_stock_data(STOCK_SYMBOLS)
