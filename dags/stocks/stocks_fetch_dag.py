@@ -34,7 +34,7 @@ with DAG(
     max_active_runs=1,
 ) as dag:
 
-    def fetch_and_send_to_kafka(**context):
+    def fetch_and_send_to_kafka():
         print("Starting stock fetch task...")
 
         records = fetch_stock_data(STOCK_SYMBOLS)
@@ -52,7 +52,6 @@ with DAG(
     fetch_task = PythonOperator(
         task_id="fetch_stock_data_and_produce_kafka",
         python_callable=fetch_and_send_to_kafka,
-        provide_context=True,
     )
 
     fetch_task

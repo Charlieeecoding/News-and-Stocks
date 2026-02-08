@@ -1,49 +1,7 @@
-# import os
-# import string
-# from dotenv import load_dotenv
-# from massive import RESTClient
-# from datetime import datetime, timedelta
-
-# load_dotenv()
-# stock_api_key = os.getenv("STOCK_API_KEY")
-
-# client = RESTClient(api_key=stock_api_key)
-
-
-# # def fetch_stock_data():
-
-# ticker = "IBM"
-# now_utc = datetime.now()
-
-#     # We fetch the last completed 5-min bar (adjust multiplier/timespan as needed)
-#     # Free tier → limited calls/min → fetching one recent bar per symbol is safe
-# end_date = now_utc.date()
-# start_date = end_date - timedelta(days=3)
-
-# # List Aggregates (Bars)
-# aggs = []
-# for a in client.list_aggs(
-#     ticker=ticker, 
-#     multiplier=5, 
-#     timespan="minute", 
-#     from_=start_date,
-#     to=end_date,
-#     limit=500000
-#     ):
-    
-#     aggs.append(a)
-
-# print(aggs)
-
-
-
-
-
 from datetime import datetime, timedelta
 from polygon import RESTClient
 from typing import List, Dict, Any
 import os
-import string
 from dotenv import load_dotenv
 
 # Load environment variables
